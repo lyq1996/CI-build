@@ -9,7 +9,7 @@ branches:
     - new
 
 #if: branch = new
-if: tag IS present
+if: tag =~ ^v1
 
 
 before_install:
