@@ -25,10 +25,10 @@ stages:
 jobs:
   # stage script can parallel.
   include:
-    if: env(condition) = new
     - stage: build
       script:
       - make
+      - echo $condition
       after_success:
         - echo "build success"
         - echo "push to server_chan?"
