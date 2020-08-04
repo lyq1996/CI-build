@@ -13,28 +13,34 @@ before_install:
   - echo "before install"
 
 jobs:
-  # job parallel
+  # stage script can parallel.
   include:
-    - if: tag IS present
-      stage: build
-      script: 
-      - make
+      - stage: build
+        script:
+        - make
+        after_success:
+          - echo "build success"
+          - echo "push to server_chan?"
+      - stage: push to github
+        script: echo "Deploying to GitHub releases ..."
+        before_deploy:
+          - echo "before_deploy"
+        deploy:
+          skip_cleanup: true
+          provider: releases
+          token: $github_oauth_key
+          on:
+            tags: true
+          file: 
+            - hello
+        after_deploy:
+          - echo "deploy success?"
+          - echo "push to server_chan?"
 
 stages:
-  - build
+  - name: build
+    if: tag IS present
+  - name: push to github
+    if: tag IS present
 
-after_success:
-  - echo "build success"
-
-deploy:
-  skip_cleanup: true
-  provider: releases
-  token: $github_oauth_key
-  on:
-    tags: true
-  file: 
-    - hello
-
-after_deploy:
-  - echo "deploy success?"
 
