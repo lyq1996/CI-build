@@ -23,9 +23,9 @@ jobs:
           - echo "push to server_chan?"
 
 stages:
-  #- build
-  - name: build
-    if: tag IS present
+  - build
+  #- name: build
+  #  if: tag IS present
   #- name: push to github
   #  if: tag IS present
 
