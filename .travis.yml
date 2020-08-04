@@ -1,0 +1,47 @@
+language: c
+dist: trusty
+
+os:
+  - linux
+
+branches: 
+  only:
+    - master
+
+before_install:
+  # fetch toolchian gcc4.9
+  - echo "before install"
+
+jobs:
+  # job parallel
+  include:
+    - stage: build
+      script: 
+      - make
+      - pwd
+      - ls -lh
+
+stages:
+  - build
+
+after_success:
+  - echo "build success"
+
+before_deploy:
+  # Set up git user name and tag this commit
+    - git config --local user.name "lyq1996"
+    - git config --local user.email "lyq123233@163.com"
+    - git tag $TRAVIS_TAG
+
+deploy:
+  cleanup: false
+  provider: releases
+  token: $github_oauth_key
+  on:
+    tags: true
+  file: 
+    - hello
+
+after_deploy:
+  - echo "deploy success?"
+
