@@ -8,8 +8,6 @@ branches:
   only:
     - new
 
-
-
 before_install:
   # fetch toolchian gcc4.9
   - echo "before install"
@@ -25,7 +23,7 @@ jobs:
           - echo "push to server_chan?"
 
 stages:
-  - name: build
+  - build
     if: tag IS present
     
 before_deploy:
