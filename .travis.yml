@@ -16,7 +16,7 @@ before_install:
 
 stages:
   - name: build
-    if: (tag =~ ^[a-z0-9-]*) AND (branch = new)
+    if: (tag IS present) AND (env(TRAVIS_BRANCH) = new)
 
 jobs:
   # stage script can parallel.
