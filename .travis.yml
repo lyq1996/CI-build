@@ -4,6 +4,10 @@ dist: trusty
 os:
   - linux
 
+env:
+  global:
+    - condition=$(cat condition)
+
 #branches: 
   #only:
   #  - new
@@ -16,7 +20,7 @@ before_install:
 
 stages:
   - name: build
-    if: (tag IS present) OR (env(TRAVIS_BRANCH) = new)
+    if: (tag IS present) OR (env(condition) = new)
 
 jobs:
   # stage script can parallel.
