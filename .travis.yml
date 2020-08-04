@@ -36,6 +36,7 @@ before_deploy:
 
 deploy:
   cleanup: false
+  skip_cleanup: true
   provider: releases
   token: $github_oauth_key
   on:
