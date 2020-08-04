@@ -4,9 +4,9 @@ dist: trusty
 os:
   - linux
 
-branches: 
-  only:
-    - new
+#branches: 
+  #only:
+  #  - new
 
 #if: branch = new
 
@@ -16,7 +16,7 @@ before_install:
 
 stages:
   - name: build
-    if: branch = sss
+    if: (branch = new) AND (tag IS present)
 
 jobs:
   # stage script can parallel.
