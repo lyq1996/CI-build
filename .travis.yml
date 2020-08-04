@@ -15,7 +15,7 @@ before_install:
 jobs:
   # stage script can parallel.
   include:
-      if: branch = master
+      if: branch = new
       env: FOO=foo
 
 #stages:
