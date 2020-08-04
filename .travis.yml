@@ -32,19 +32,16 @@ jobs:
       after_success:
         - echo "build success"
         - echo "push to server_chan?"
-
-before_deploy:
-  - echo "before_deploy"
-
-deploy:
-  skip_cleanup: true
-  provider: releases
-  token: $github_oauth_key
-  on:
-    tags: true
-  file: 
-    - hello
-
-after_deploy:
-  - echo "deploy success?"
-  - echo "push to server_chan?"
+      before_deploy:
+        - echo "before_deploy"
+      deploy:
+        skip_cleanup: true
+        provider: releases
+        token: $github_oauth_key
+        on:
+          tags: true
+        file: 
+          - hello
+      after_deploy:
+        - echo "deploy success?"
+        - echo "push to server_chan?"
