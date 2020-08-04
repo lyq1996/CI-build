@@ -8,8 +8,8 @@ branches:
   only:
     - new
 
-if: branch = new
-#if: tag IS present
+#if: branch = new
+if: tag IS present
 
 
 before_install:
@@ -26,8 +26,8 @@ jobs:
           - echo "build success"
           - echo "push to server_chan?"
 
-#stages:
-  #- build
+stages:
+  - build
     
 before_deploy:
   - echo "before_deploy"
