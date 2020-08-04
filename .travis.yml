@@ -20,11 +20,12 @@ before_install:
 
 stages:
   - name: build
-    if: (tag IS present) OR (env(condition) = new)
+    if: tag IS present
 
 jobs:
   # stage script can parallel.
   include:
+    if: env(condition) = new
     - stage: build
       script:
       - make
