@@ -20,6 +20,7 @@ jobs:
       - make
       - pwd
       - ls -lh
+      - export TRAVIS_TAG="$(date +'%Y%m%d')-$(git log --format=%h -1)"
 
 stages:
   - build
