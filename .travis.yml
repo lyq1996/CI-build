@@ -9,12 +9,14 @@ branches:
     - new
 
 #if: branch = new
-if: tag =~ ^v1
-
 
 before_install:
   # fetch toolchian gcc4.9
   - echo "before install"
+
+stages:
+  -name: build
+    if: tag IS present
 
 jobs:
   # stage script can parallel.
@@ -26,9 +28,6 @@ jobs:
           - echo "build success"
           - echo "push to server_chan?"
 
-stages:
-  - build
-    
 before_deploy:
   - echo "before_deploy"
 
