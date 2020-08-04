@@ -16,7 +16,7 @@ before_install:
 
 stages:
   - name: build
-    if: tag IS present
+    if: branch = new
 
 jobs:
   # stage script can parallel.
