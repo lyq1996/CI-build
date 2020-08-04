@@ -17,7 +17,8 @@ before_install:
 jobs:
   # stage script can parallel.
   include:
-      - stage: build
+      - if: tag IS present
+        stage: build
         script:
         - make
         after_success:
@@ -25,8 +26,8 @@ jobs:
           - echo "push to server_chan?"
 
 stages:
-  -name build
-    if: tag IS present
+  -build
+    
 before_deploy:
   - echo "before_deploy"
 
