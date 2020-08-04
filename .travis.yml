@@ -24,7 +24,6 @@ jobs:
 
 stages:
   - build
-    if: tag IS present
     
 before_deploy:
   - echo "before_deploy"
