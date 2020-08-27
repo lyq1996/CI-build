@@ -9,41 +9,49 @@ branches:
     - master
 
 before_install:
-  # fetch toolchian gcc4.9
-  - echo "before install"
+  - echo "fetch https://github.com/ClangBuiltLinux/tc-build"
+  - git clone https://github.com/ClangBuiltLinux/tc-build
+  - echo "fetch build srcipt"
+  - wget -L https://raw.githubusercontent.com/wloot/tc-build/master/build-tc.sh
+  - echo "remove clang vendor name"
+  - sed -i 's/--clang-vendor/#--clang-vendor/g' build-tc.sh
+  - echo "remove additional link"
+  - sed -i 's/--additional-build-arguments/#--additional-build-arguments/g' build-tc.sh
+  - mv build-tc.sh tc-build
+  - chmod +x tc-build/build-tc.sh
+
 
 jobs:
   # job parallel
   include:
     - stage: build
       script: 
-      - make
-      - pwd
-      - ls -lh
-      - export TRAVIS_TAG="$(date +'%Y%m%d')-$(git log --format=%h -1)"
+      - cd tc-build
+      - ./build-tc.sh
 
 stages:
   - build
 
 after_success:
   - echo "build success"
+  - cd ..
+  - export TRAVIS_TAG="clang-$(date +'%Y%m%d')"
 
 before_deploy:
   # Set up git user name and tag this commit
     - git config --local user.name "lyq1996"
     - git config --local user.email "lyq123233@163.com"
     - git tag $TRAVIS_TAG
+    - tar -zcvf $TRAVIS_TAG.tar.gz -C tc-build/install/
 
 deploy:
-  cleanup: false
   skip_cleanup: true
   provider: releases
   token: $github_oauth_key
   on:
     tags: true
   file: 
-    - hello
+    - $TRAVIS_TAG.tar.gz
 
 after_deploy:
-  - echo "deploy success?"
-
+  - echo "deploy success"
