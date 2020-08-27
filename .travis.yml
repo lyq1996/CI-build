@@ -9,6 +9,8 @@ branches:
     - master
 
 before_install:
+  - apt install bc bison ca-certificates ccache clang cmake curl file flex gcc g++ git libelf-dev libssl-dev make ninja-build python3 texinfo u-boot-tools xz-utils zlib1g-dev
+
   - echo "fetch https://github.com/ClangBuiltLinux/tc-build"
   - git clone https://github.com/ClangBuiltLinux/tc-build
   - echo "fetch build srcipt"
