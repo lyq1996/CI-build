@@ -1,5 +1,5 @@
 language: c
-dist: bionic
+dist: focal
 
 os:
   - linux
@@ -15,16 +15,18 @@ before_install:
   - echo "fetch https://github.com/ClangBuiltLinux/tc-build"
   - git clone https://github.com/ClangBuiltLinux/tc-build
   - echo "fetch build srcipt"
-  - wget -L https://raw.githubusercontent.com/wloot/tc-build/master/build-tc.sh
+  - wget -L https://raw.githubusercontent.com/wloot/tc-build/e4f9d22bf6f757b38406749666c59a3d03601c0a/build-tc.sh
   - echo "remove clang vendor name"
   - sed -i 's/--clang-vendor/#--clang-vendor/g' build-tc.sh
   - echo "remove additional link"
   - sed -i 's/--additional-build-arguments/#--additional-build-arguments/g' build-tc.sh
-
+  - echo "remove flag: --update"
   - sed -i 's/--update/#--update/g' build-tc.sh
-
+  - echo "remove flag: --lto"
   - sed -i 's/--lto/#--lto/g' build-tc.sh
 
+  - echo "use good revision"
+  - sed -i '17 a\        --use-good-revision \\' build-tc.sh
   - sed -i 's/"installTmp" \\/"installTmp"/g' build-tc.sh
 
   - mv build-tc.sh tc-build
@@ -37,7 +39,8 @@ jobs:
     - stage: build
       script: 
       - cd tc-build
-      - ./build-tc.sh
+      - cmake --version
+      #- ./build-tc.sh
 
 stages:
   - build
