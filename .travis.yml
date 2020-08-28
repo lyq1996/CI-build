@@ -20,9 +20,7 @@ before_install:
   - sed -i 's/--clang-vendor/#--clang-vendor/g' build-tc.sh
   - echo "remove additional link"
   - sed -i 's/--additional-build-arguments/#--additional-build-arguments/g' build-tc.sh
-  - echo "remove flag: --update"
   - sed -i 's/--update/#--update/g' build-tc.sh
-  - echo "remove flag: --lto"
   - sed -i 's/--lto/#--lto/g' build-tc.sh
 
   - echo "use good revision"
