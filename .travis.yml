@@ -8,6 +8,11 @@ branches:
   only:
     - master
 
+#stages:
+#  - name: build
+#    if: tag IS present
+
+
 before_install:
   - sudo apt update
   - sudo apt -y install bc bison ca-certificates ccache clang cmake curl file flex gcc g++ git libelf-dev libssl-dev make ninja-build python3 texinfo u-boot-tools xz-utils zlib1g-dev
@@ -38,7 +43,7 @@ jobs:
       script: 
       - cd tc-build
       - cmake --version
-      #- ./build-tc.sh
+      - ./build-tc.sh
 
 stages:
   - build
