@@ -4,14 +4,9 @@ dist: focal
 os:
   - linux
 
-branches: 
-  only:
-    - master
-
-#stages:
-#  - name: build
-#    if: tag IS present
-
+#branches: 
+#  only:
+#    - master
 
 before_install:
   - sudo apt update
@@ -25,16 +20,21 @@ before_install:
   - sed -i 's/--clang-vendor/#--clang-vendor/g' build-tc.sh
   - echo "remove additional link"
   - sed -i 's/--additional-build-arguments/#--additional-build-arguments/g' build-tc.sh
-  - sed -i 's/--update/#--update/g' build-tc.sh
-  - sed -i 's/--lto/#--lto/g' build-tc.sh
+
+  - sed -i '15,16d' build-tc.sh
+  #- sed -i 's/--update/#--update/g' build-tc.sh
+  #- sed -i 's/--lto/#--lto/g' build-tc.sh
 
   - echo "use good revision"
-  - sed -i '17 a\        --use-good-revision \\' build-tc.sh
+  - sed -i '14 a\        --use-good-revision \\' build-tc.sh
   - sed -i 's/"installTmp" \\/"installTmp"/g' build-tc.sh
 
   - mv build-tc.sh tc-build
   - chmod +x tc-build/build-tc.sh
 
+stages:
+  - name: build
+    if: tag IS present
 
 jobs:
   # job parallel
@@ -45,29 +45,21 @@ jobs:
       - cmake --version
       - ./build-tc.sh
 
-stages:
-  - build
+      after_success:
+        - echo "build success"
+        - cd ..
 
-after_success:
-  - echo "build success"
-  - cd ..
-  - export TRAVIS_TAG="clang-$(date +'%Y%m%d')"
+      before_deploy:
+        - tar -zcvf $TRAVIS_TAG.tar.gz -C tc-build/install/
 
-before_deploy:
-  # Set up git user name and tag this commit
-    - git config --local user.name "lyq1996"
-    - git config --local user.email "lyq123233@163.com"
-    - git tag $TRAVIS_TAG
-    - tar -zcvf $TRAVIS_TAG.tar.gz -C tc-build/install/
+      deploy:
+        skip_cleanup: true
+        provider: releases
+        token: $github_oauth_key
+        on:
+          tags: true
+        file: 
+          - $TRAVIS_TAG.tar.gz
 
-deploy:
-  skip_cleanup: true
-  provider: releases
-  token: $github_oauth_key
-  on:
-    tags: true
-  file: 
-    - $TRAVIS_TAG.tar.gz
-
-after_deploy:
-  - echo "deploy success"
+      after_deploy:
+        - echo "deploy success"
